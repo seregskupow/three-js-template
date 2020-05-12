@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const miniCss = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
@@ -16,6 +17,9 @@ module.exports = {
       template:"./src/index.html",
       title: "Template",
     }),
+    new miniCss({
+      filename: 'style.css',
+   })
   ],
   output: {
     filename: "[name].bundle.js",
@@ -36,9 +40,13 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
+        test:/\.(s*)css$/,
+        use: [
+           miniCss.loader,
+           'css-loader',
+           'sass-loader',
+        ]
+     },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
         use: [
